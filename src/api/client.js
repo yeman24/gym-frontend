@@ -5,8 +5,10 @@ api.interceptors.request.use((config) => { const token = localStorage.getItem("i
 const unwrap = (promise) => promise.then((response) => response.data.data);
 export const getPlans = () => unwrap(api.get("/plans"));
 export const getClasses = () => unwrap(api.get("/classes"));
+export const bookClass = (data) => unwrap(api.post("/bookings", data));
 export const getTrainers = () => unwrap(api.get("/trainers"));
 export const sendInquiry = (data) => unwrap(api.post("/inquiries", data));
+export const sendChatMessage = (messages) => unwrap(api.post("/chat", { messages }));
 export const login = (data) => unwrap(api.post("/auth/login", data));
 export const getAdminResource = (resource) => unwrap(api.get(`/admin/${resource}`));
 export const createAdminResource = (resource, data) => unwrap(api.post(`/admin/${resource}`, data));
