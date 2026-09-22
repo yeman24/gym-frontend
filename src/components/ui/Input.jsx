@@ -1,0 +1,1 @@
+export function Input({ label, error, ...props }) { return <label className="field">{label && <span>{label}</span>}<input {...props} />{error && <small className="error-text">{error}</small>}</label>; }

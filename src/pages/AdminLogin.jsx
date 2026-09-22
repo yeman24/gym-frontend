@@ -1,0 +1,7 @@
+import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { login } from "../api/client";
+import { Button } from "../components/ui/Button";
+import { Input } from "../components/ui/Input";
+
+export function AdminLogin() { const navigate = useNavigate(); const [form, setForm] = useState({ email: "admin@ironhouse.fit", password: "admin123" }); const [error, setError] = useState(""); if (localStorage.getItem("ironhouse_token")) return <Navigate to="/admin" replace />; const submit = async (e) => { e.preventDefault(); try { const result = await login(form); localStorage.setItem("ironhouse_token", result.token); localStorage.setItem("ironhouse_user", JSON.stringify(result.user)); navigate("/admin"); } catch (e) { setError(e.response?.data?.message || "Unable to sign in."); } }; return <div className="auth-page"><div className="auth-card"><p className="eyebrow">IRONHOUSE ADMIN</p><h1>Welcome<br /><em>back.</em></h1><p>Manage the gym from one focused workspace.</p><form onSubmit={submit}><Input label="Email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /><Input label="Password" type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />{error && <p className="error-text">{error}</p>}<Button type="submit">Sign in</Button></form><small>Demo: admin@ironhouse.fit / admin123</small></div></div>; }
