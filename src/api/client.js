@@ -1,14 +1,14 @@
 import axios from "axios";
 
 // Determine base API URL (ignoring any misconfigured unrelated services like aura-edinburgh)
-const rawBaseURL = import.meta.env.VITE_API_URL || "";
-const isAuraOrInvalid = rawBaseURL.includes("aura-edinburgh");
+const rawBaseURL = (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_URL) || "";
+const isAuraOrInvalid = typeof rawBaseURL === "string" && rawBaseURL.includes("aura-edinburgh");
 const apiBaseURL = !isAuraOrInvalid && rawBaseURL ? rawBaseURL : "http://localhost:4000/api";
 
 export const api = axios.create({ baseURL: apiBaseURL, timeout: 6000 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("ironhouse_token");
+  const token = typeof window !== "undefined" ? localStorage.getItem("ironhouse_token") : null;
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
